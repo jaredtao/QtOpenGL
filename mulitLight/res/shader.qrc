@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shader/vshader.glsl</file>
+        <file>shader/light.fsh</file>
+        <file>shader/light.vsh</file>
+        <file>shader/mulitlight.fsh</file>
+    </qresource>
+</RCC>
