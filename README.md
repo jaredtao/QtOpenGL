@@ -37,29 +37,36 @@ Qt5写的一些OpenGL小例子集合
     4. Renderer 有个函数叫void synchronize(QQuickFramebufferObject *item), 可以用来做线程同步
     (Item工作在主线程，Renderer 工作在Scene Graph绘图线程)
     我用的时候，是把参数item可以强制转换成我从Item派生出来的子类，然后用里面的数据和这个Renderer交互就好了。
-
-  ![FrameBufferObject](img/FrameBufferObject.png)
+![FrameBufferObject](img/FrameBufferObject.png)
 * light
 
     Shader光照的例子。  一个立方体的前面, 放一个移动的光源,
     ![light](img/light.png)
 * lightCasters
+
   手电筒光源
+
     ![lightCasters](img/lightCasters.png)
 
 * mulitLight
 
   镜面反射、漫反射，手电筒的集合
   ![mulitLight](img/mulitLight.png)
+
 * material
 
   材质的使用,边缘部分发光，中间部分不发光
+
   ![material](img/material.png)
+
 * DepthTest
 
   利用深度测试，后面的箱子边缘部分用红色绘制出来
+
   ![DepthTest](img/DepthTest.png)
+
 * CubeMap
 
   天空盒
+
   ![CubeMap](img/CubeMap.png)
