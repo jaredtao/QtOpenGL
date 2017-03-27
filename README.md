@@ -6,7 +6,7 @@ Qt5写的一些OpenGL小例子集合
 
 * lesson01    
 
-   以QOpenGLWidget为框架，简单的纹理贴图,使用定时器控制纹理旋转
+   以QOpenGLWidget为框架，简单的纹理贴图,使用定时器控制纹理旋转。
    ![lesson01](img/lesson01.png)
 
 * lesson02  
@@ -16,7 +16,7 @@ Qt5写的一些OpenGL小例子集合
 
 * HelloTriangle   
 
-    绘制了10个立方体，每个立方体的每个表面使用2张纹理混合贴图。混合比例按数字键1/2进行调节
+    绘制了10个立方体，每个立方体的每个表面使用2张纹理混合贴图。混合比例按数字键1/2进行调节。
     ![HelloTriangle](img/HelloTriangle.png)
 * QuickOpenGL
 
@@ -33,14 +33,14 @@ Qt5写的一些OpenGL小例子集合
     这里大概说一下用法：
     1. 继承QQuickFramebufferObject实现一个自定义item,并注册到QML中使用
     2. 继承QQuickFramebufferObject::Renderer,实现一个自定义Renderer
-    3. 自定义Renderer内部再封装一个OpenGL相关的渲染类,因为这个Renderer是在Scene Graph线程工作，始终拥有OpenGL上下文环境，非常方便。
+    3. 自定义Renderer内部再封装一个OpenGL相关的渲染类。Renderer是在Scene Graph线程工作，始终拥有OpenGL上下文环境，所以渲染类写在Renderer内部，非常方便。
     4. Renderer 有个函数叫void synchronize(QQuickFramebufferObject *item), 可以用来做线程同步
     (Item工作在主线程，Renderer 工作在Scene Graph绘图线程)
     我用的时候，是把参数item可以强制转换成我从Item派生出来的子类，然后用里面的数据和这个Renderer交互就好了。
 ![FrameBufferObject](img/FrameBufferObject.png)
 * light
 
-    Shader光照的例子。  一个立方体的前面, 放一个移动的光源,
+    Shader光照的例子。  一个立方体的前面, 放一个移动的光源。
     ![light](img/light.png)
 * lightCasters
 
