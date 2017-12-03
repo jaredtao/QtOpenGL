@@ -17,7 +17,7 @@ Window::Window(QWidget *parent):
 {
     fps = 60.0;
     connect(&timer, SIGNAL(timeout()), this, SLOT(processTimeout()));
-    timer.start(100);
+    timer.start(1000 / 60);
 }
 Window::~Window()
 {
@@ -208,6 +208,7 @@ void Window::paintGL()
         useMaterialShader();
         int viewPosLoc    = program.uniformLocation("viewPos");
         program.setUniformValue(viewPosLoc, QVector3D(0.0f, 0.0f, 3.0f));
+
         int lightColorLoc = program.uniformLocation("lightColor");
         program.setUniformValue(lightColorLoc, lightColor);
 

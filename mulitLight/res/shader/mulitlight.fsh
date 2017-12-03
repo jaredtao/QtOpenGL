@@ -44,8 +44,6 @@ struct SpotLight{
     float constant;
     float linear;
     float quadratic;
-
-
 };
 
 uniform Material material;
@@ -85,8 +83,10 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     vec3 diffuse = light.diffuse * diff * texDiffuse;
 
     //specular 镜面光
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+//    vec3 reflectDir = reflect(-lightDir, normal);
+//    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 halfWayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfWayDir), 0.0), material.shininess);
     vec3 specular = light.specular * spec * vec3(texture2D(material.specular, v_texcoord));
 
     return ambient + diffuse + specular;
@@ -106,8 +106,10 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     vec3 diffuse = light.diffuse * diff * texDiffuse;
 
     //specular
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+//    vec3 reflectDir = reflect(-lightDir, normal);
+//    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 halfWayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfWayDir), 0.0), material.shininess);
     vec3 specular = light.specular * spec * vec3(texture2D(material.specular, v_texcoord));
 
     //计算距离 和 衰减系数
@@ -130,8 +132,10 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     vec3 diffuse = light.diffuse * diff * texDiffuse;
 
     //specular
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+//    vec3 reflectDir = reflect(-lightDir, normal);
+//    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 halfWayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfWayDir), 0.0), material.shininess);
     vec3 specular = light.specular * spec * vec3(texture2D(material.specular, v_texcoord));
 
     //计算距离 和 衰减系数

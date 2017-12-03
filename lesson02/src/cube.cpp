@@ -130,11 +130,11 @@ void Cube::initCube()
     //! [1]
     // Transfer vertex data to VBO 0
     arrayBuf.bind();
-    arrayBuf.allocate(vertices, 24 * sizeof(VertexData));
+    arrayBuf.allocate(vertices, sizeof(vertices));
 
     // Transfer index data to VBO 1
     indexBuf.bind();
-    indexBuf.allocate(indices, 34 * sizeof(GLushort));
+    indexBuf.allocate(indices, sizeof(indices));
 #else
         VertexData vertices[] = {
             // Vertex data for face 1, left

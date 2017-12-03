@@ -30,7 +30,7 @@ void Window::resizeGL(int w, int h)
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
     // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear =0.1f, zFar = 100.0, fov = 45.0;
+    const qreal zNear =0.1f, zFar = 1000.0, fov = 45.0;
 
     // Reset projection
     project.setToIdentity();
@@ -42,7 +42,7 @@ void Window::paintGL()
 {
     glClearColor(0.1, 0.1, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    program.bind();
     program.setUniformValue("view", view);
     program.setUniformValue("project", project);
     program.setUniformValue("model", model);
@@ -67,9 +67,9 @@ void Window::initMatrix()
     view.lookAt(QVector3D(0, 0, 3.0),
                 QVector3D(0, 0, 0),
                 QVector3D(0, 1, 0));
-    //    view.rotate(QQuaternion::fromAxisAndAngle(QVector3D(1.0, 0, 0), 45));
+//        view.rotate(QQuaternion::fromAxisAndAngle(QVector3D(1.0, 0, 0), 45));
 
     model.setToIdentity();
     project.setToIdentity();
-    project.frustum(-1, 1, -1, 1, 1.001, 100.0);
+    project.perspective(45.0, (float)width() / height(), 0.1f, 100.0f);
 }

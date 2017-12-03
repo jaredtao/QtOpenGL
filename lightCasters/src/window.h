@@ -3,16 +3,16 @@
 
 #include "cube.h"
 
-#include <QOpenGLWidget>
-#include <QOpenGLFunctions>
-#include <QMatrix4x4>
-#include <QQuaternion>
-#include <QVector2D>
 #include <QTime>
 #include <QTimer>
-#include <QOpenGLShaderProgram>
+#include <QKeyEvent>
+#include <QVector2D>
+#include <QMatrix4x4>
+#include <QQuaternion>
+#include <QOpenGLWidget>
 #include <QOpenGLTexture>
-
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
 
 class Cube;
 
@@ -23,7 +23,7 @@ public:
     explicit Window(QWidget *parent = 0);
     ~Window();
 protected:
-
+    void keyPressEvent(QKeyEvent *event) override;
     void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 
@@ -59,7 +59,7 @@ private:
 	QMatrix4x4 model;
     QMatrix4x4 view;
 
-    GLfloat  shininess;
+    GLfloat  shininess = 8.0;
 
     QVector3D lightAmibent;
     QVector3D lightDiffuse;

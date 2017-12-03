@@ -21,7 +21,7 @@ void main()
     v_texcoord  = a_texcoord;
     v_normal    = mat3(transpose(inverse(modelMat))) *a_normal;
 //    v_normal = a_normal;
-    gl_Position = projectMat * viewMat * modelMat * vec4(a_position, 1.0f);
     v_fragPos   = vec3(modelMat * vec4(a_position, 1.0f));
+    gl_Position = projectMat * viewMat * vec4(v_fragPos, 1.0f);
 }
 

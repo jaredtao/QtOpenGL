@@ -34,6 +34,7 @@ void Window::mouseMoveEvent(QMouseEvent *event)
 	QPointF diff = QPointF(0, 0);
 
 	diff = event->pos() - last;
+    qWarning() << diff;
 	last = event->pos();
 
 	qreal sensitivity = 0.05;

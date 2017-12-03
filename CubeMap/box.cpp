@@ -7,6 +7,9 @@ Box::Box()
 
 void Box::Draw(const QOpenGLShaderProgram &program)
 {
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glDepthMask(GL_FALSE);
     glBindVertexArray(VAO);
     glActiveTexture(GL_TEXTURE0);
     glUniform1i(glGetUniformLocation(program.programId(), "skybox"), (GLuint)0);
@@ -14,34 +17,35 @@ void Box::Draw(const QOpenGLShaderProgram &program)
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     glBindVertexArray(0);
+    glDepthMask(GL_TRUE);
 }
 
 void Box::init()
 {
-    initTexture();
+    bool ret = initializeOpenGLFunctions();
+    qDebug() << "function init:" <<ret;
     initBuf();
+    initTexture();
 }
 void Box::initTexture()
 {
-    bool ret = initializeOpenGLFunctions();
-    qDebug() << "function init:" <<ret;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
 
     int width, height;
     QImage images[] = {
-        QImage(":/box/alpine/alpine_right.jpg"),
-        QImage(":/box/alpine/alpine_left.jpg"),
-        QImage(":/box/alpine/alpine_top.jpg"),
-        QImage(":/box/alpine/alpine_bottom.png"),
-        QImage(":/box/alpine/alpine_back.jpg"),
-        QImage(":/box/alpine/alpine_front.jpg"),
+        QImage(":/box/skybox/right.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/skybox/left.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/skybox/top.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/skybox/bottom.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/skybox/back.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/skybox/front.jpg").convertToFormat(QImage::Format_RGB888),
     };
     width = images[0].width();
     height = images[0].height();
 
     for (int i = 0; i < 6; i++) {
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void *)images[i].bits());
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, (void *)images[i].bits());
     }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

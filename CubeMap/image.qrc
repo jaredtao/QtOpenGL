@@ -6,5 +6,11 @@
         <file>box/alpine/alpine_right.jpg</file>
         <file>box/alpine/alpine_top.jpg</file>
         <file>box/alpine/alpine_bottom.png</file>
+        <file>box/skybox/back.jpg</file>
+        <file>box/skybox/bottom.jpg</file>
+        <file>box/skybox/front.jpg</file>
+        <file>box/skybox/left.jpg</file>
+        <file>box/skybox/right.jpg</file>
+        <file>box/skybox/top.jpg</file>
     </qresource>
 </RCC>

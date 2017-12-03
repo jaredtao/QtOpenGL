@@ -4,7 +4,6 @@
 #include <QPainter>
 #include <QtMath>
 
-
 Window::Window(QWidget *parent):
     QOpenGLWidget(parent) ,
     materialV(nullptr),
@@ -18,7 +17,7 @@ Window::Window(QWidget *parent):
 {
     fps = 60.0;
     connect(&timer, SIGNAL(timeout()), this, SLOT(processTimeout()));
-    timer.start(10);
+    timer.start(1000 / 60);
 }
 Window::~Window()
 {
@@ -31,6 +30,24 @@ Window::~Window()
     delete textureSpecular;
     delete cube;
     doneCurrent();
+}
+void Window::keyPressEvent(QKeyEvent *event)
+{
+    switch(event->key()) {
+    case Qt::Key_A: {
+        shininess += 8.0;
+        break;
+    }
+    case Qt::Key_D: {
+        shininess -= 8.0;
+        if ( shininess < 8.0) {
+            shininess = 8.0;
+        }
+        break;
+    }
+    default: break;
+    }
+    event->accept();
 }
 void Window::mousePressEvent(QMouseEvent *e)
 {

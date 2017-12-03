@@ -62,7 +62,7 @@ void Window::initializeGL()
 
     glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
-
+//    glEnable(GL_CULL_FACE);
     initShaders();
     initTextures();
     initDatas();
@@ -152,14 +152,15 @@ void Window::initShaders()
 void Window::initTextures()
 {
     textureMaterial = new QOpenGLTexture(QImage(":/image/container.png").mirrored());
-    textureMaterial->setMinificationFilter(QOpenGLTexture::Nearest);
+    textureMaterial->setMinificationFilter(QOpenGLTexture::LinearMipMapNearest);
     textureMaterial->setMagnificationFilter(QOpenGLTexture::Linear);
     textureMaterial->setWrapMode(QOpenGLTexture::Repeat);
-
+    textureMaterial->generateMipMaps();
     textureSpecular = new QOpenGLTexture(QImage(":/image/container2_specular.png").mirrored());
-    textureSpecular->setMinificationFilter(QOpenGLTexture::Nearest);
+    textureSpecular->setMinificationFilter(QOpenGLTexture::LinearMipMapNearest);
     textureSpecular->setMagnificationFilter(QOpenGLTexture::Linear);
     textureSpecular->setWrapMode(QOpenGLTexture::Repeat);
+    textureSpecular->generateMipMaps();
 
 }
 void Window::initDatas()
