@@ -1,23 +1,28 @@
 # Qt5 OpenGL
 
-Qt5写的一些OpenGL小例子集合
-是在学习[LearnOpenGL教程](http://bullteacher.com/category/zh_learnopengl_com)的过程中,使用Qt制作的
+Qt5写的一些OpenGL小例子集合,
+参考[LearnOpenGL教程](http://bullteacher.com/category/zh_learnopengl_com)
 
+## License
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/wentaojia2014/HelloDirectX/blob/master/LICENSE)
 
-* lesson01    
+## 目录
+
+* HelloTexture    
 
    以QOpenGLWidget为框架，简单的纹理贴图,使用定时器控制纹理旋转。
-   ![lesson01](img/lesson01.png)
+   ![HelloTexture](img/HelloTexture.png)
 
-* lesson02  
+* HelloCube
 
    立方体贴图的例子，自己用画板画了一个图，然后贴成一个Cube。可以用鼠标控制立方体旋转。
-   ![lesson02](img/lesson02.png)
+   ![HelloCube](img/HelloCube.png)
 
-* HelloTriangle   
+* HelloMix   
 
     绘制了10个立方体，每个立方体的每个表面使用2张纹理混合贴图。混合比例按数字键1/2进行调节。
-    ![HelloTriangle](img/HelloTriangle.png)
+    ![HelloMix](img/HelloMix.png)
+
 * QuickOpenGL
 
     这个是在不了解QML Quick内部原理的时候，在qml中添加自定义OpenGL渲染控件，用的是QQuickWindow的beforeRendering信号。后来知道了QQuickFramebufferObject之后，基本上这种方式就被抛弃了。这里保留项目仅作为观赏，建议参考下面FrameBufferObject。
@@ -26,7 +31,7 @@ Qt5写的一些OpenGL小例子集合
 
     效果与上一个例子QuickOpenGL 类似，多了全屏放大功能,纹理沿着三个坐标轴旋转的功能。
 
-    使用QQuickFramebufferObject 作为OpenGL自绘制控件，相当于QQuickItem了。
+    使用QQuickFramebufferObject 作为OpenGL自绘制控件(相当于QQuickItem了)。
 
     QQuickFramebufferObject是 Qt封装好的，需要理解其使用架构。
 
@@ -37,6 +42,7 @@ Qt5写的一些OpenGL小例子集合
     4. Renderer 有个函数叫void synchronize(QQuickFramebufferObject *item), 可以用来做线程同步
     (Item工作在主线程，Renderer 工作在Scene Graph绘图线程)
     我用的时候，是把参数item可以强制转换成我从Item派生出来的子类，然后用里面的数据和这个Renderer交互就好了。
+
 ![FrameBufferObject](img/FrameBufferObject.png)
 * light
 
@@ -67,6 +73,23 @@ Qt5写的一些OpenGL小例子集合
 
 * CubeMap
 
-  天空盒
+  天空盒 (效果有点问题，后续修改)
 
   ![CubeMap](img/CubeMap.png)
+
+#### 联系方式:
+***
+|作者|贾文涛|
+|---|---|
+|QQ|759378563|
+|微信|xsd2410421|
+|邮箱|jared2020@163.com|
+|blog|https://wentaojia2014.github.io/|
+
+###### 请放心联系我，乐于提供相关帮助
+***
+#### **打赏**
+<img src="https://github.com/wentaojia2014/wentaojia2014.github.io/blob/master/img/weixin.jpg?raw=true" width="30%" height="30%" /><img src="https://github.com/wentaojia2014/wentaojia2014.github.io/blob/master/img/zhifubao.jpg?raw=true" width="30%" height="30%" />
+
+###### 觉得分享的内容还不错, 就请作者喝杯奶茶吧~~
+***

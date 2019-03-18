@@ -7,8 +7,7 @@ Box::Box()
 
 void Box::Draw(const QOpenGLShaderProgram &program)
 {
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+
     glDepthMask(GL_FALSE);
     glBindVertexArray(VAO);
     glActiveTexture(GL_TEXTURE0);
@@ -26,6 +25,8 @@ void Box::init()
     qDebug() << "function init:" <<ret;
     initBuf();
     initTexture();
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 }
 void Box::initTexture()
 {
@@ -34,12 +35,12 @@ void Box::initTexture()
 
     int width, height;
     QImage images[] = {
-        QImage(":/box/skybox/right.jpg").convertToFormat(QImage::Format_RGB888),
-        QImage(":/box/skybox/left.jpg").convertToFormat(QImage::Format_RGB888),
-        QImage(":/box/skybox/top.jpg").convertToFormat(QImage::Format_RGB888),
-        QImage(":/box/skybox/bottom.jpg").convertToFormat(QImage::Format_RGB888),
-        QImage(":/box/skybox/back.jpg").convertToFormat(QImage::Format_RGB888),
-        QImage(":/box/skybox/front.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/alpine/alpine_right.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/alpine/alpine_left.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/alpine/alpine_top.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/alpine/alpine_bottom.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/alpine/alpine_back.jpg").convertToFormat(QImage::Format_RGB888),
+        QImage(":/box/alpine/alpine_front.jpg").convertToFormat(QImage::Format_RGB888),
     };
     width = images[0].width();
     height = images[0].height();

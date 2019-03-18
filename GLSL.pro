@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 SUBDIRS += \
-    lesson01 \
-    HelloTriangle \
-    lesson02 \
+    HelloTexture \
+    HelloMix \
+    HelloCube \
     QuickOpenGL \
     light \
     lightCasters \
@@ -11,3 +11,4 @@ SUBDIRS += \
     material \
     DepthTest \
     CubeMap
+OTHER_FILES += README.md
