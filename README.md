@@ -67,6 +67,6 @@ Qt5写的一些OpenGL小例子集合
 
 * CubeMap
 
-  天空盒
+  天空盒 (这个好像贴错了，天空和地面是反的，有时间再改)
 
   ![CubeMap](img/CubeMap.png)
