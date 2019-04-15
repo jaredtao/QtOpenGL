@@ -5,7 +5,7 @@
 #include <QScreen>
 #include <QDesktopWidget>
 #include <QApplication>
-class Shader: public QQuickFramebufferObject{
+class Item: public QQuickFramebufferObject{
 	Q_OBJECT
 	Q_PROPERTY(qreal xRotate READ xRotate WRITE setXRotate NOTIFY xRotateChanged)
 	Q_PROPERTY(qreal yRotate READ yRotate WRITE setYRotate NOTIFY yRotateChanged)
@@ -14,18 +14,18 @@ class Shader: public QQuickFramebufferObject{
 	Q_PROPERTY(qreal fps READ fps NOTIFY fpsChanged)
 
 public:
-	Shader(QQuickItem *parent = 0)
+    Item(QQuickItem *parent = 0)
 		:	QQuickFramebufferObject(parent)
 		,	m_xRotate(0)
 		,	m_yRotate(0)
 		,	m_zRotate(0)
 		,	m_fps(0)
 	{
-		connect(this, &Shader::xRotateChanged, [=](){update();});
-		connect(this, &Shader::yRotateChanged, [=](){update();});
-		connect(this, &Shader::zRotateChanged, [=](){update();});
+        connect(this, &Item::xRotateChanged, [=](){update();});
+        connect(this, &Item::yRotateChanged, [=](){update();});
+        connect(this, &Item::zRotateChanged, [=](){update();});
 
-        connect(this, &Shader::fullChanged, [&](){
+        connect(this, &Item::fullChanged, [&](){
             if (full()) {
                 m_size.setWidth(this->width());
                 m_size.setHeight(this->height());

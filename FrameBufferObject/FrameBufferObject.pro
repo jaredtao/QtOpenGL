@@ -11,11 +11,11 @@ RESOURCES += \
     res/shader.qrc
 
 HEADERS += \
-    src/shader.h \
+    src/item.h \
     src/easy.h \
     src/render.h
 
 SOURCES += \
     src/main.cpp \
-    src/shader.cpp \
+    src/item.cpp \
     src/render.cpp

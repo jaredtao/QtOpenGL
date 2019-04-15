@@ -1,4 +1,4 @@
-﻿#include "shader.h"
+﻿#include "item.h"
 #include "render.h"
 #include<QOpenGLFramebufferObject>
 #include <QThread>
@@ -24,7 +24,7 @@ void ItemRender::render()
 
 void ItemRender::synchronize(QQuickFramebufferObject *item)
 {
-	Shader *shader = qobject_cast<Shader *>(item);
+    Item *shader = qobject_cast<Item *>(item);
 	m_render.setRotate(shader->xRotate(), shader->yRotate(), shader->zRotate());
 	shader->updateFPS(m_render.getFPS());
 }
@@ -37,7 +37,7 @@ QOpenGLFramebufferObject *ItemRender::createFramebufferObject(const QSize &size)
 	return new QOpenGLFramebufferObject(size, format);
 }
 
-QQuickFramebufferObject::Renderer * Shader::createRenderer() const
+QQuickFramebufferObject::Renderer * Item::createRenderer() const
 {
 	return new ItemRender;
 }

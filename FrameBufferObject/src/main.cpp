@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QQuickView>
 #include <QQmlApplicationEngine>
-#include "shader.h"
+#include "item.h"
 #include <QSurfaceFormat>
 int main(int argc, char *argv[])
 {
@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 	qSetMessagePattern("log[%{file} %{function} %{line}] %{message}");
     QApplication app(argc, argv);
 
-    qmlRegisterType<Shader>("Shader", 1, 0, "Shader");
+    qmlRegisterType<Item>("TaoItem", 1, 0, "TaoItem");
     QQuickView view;
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.setSource(QUrl(QLatin1Literal("qrc:/qml/main.qml")));
