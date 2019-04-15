@@ -39,7 +39,7 @@ public:
                 this->setHeight(m_size.height());
             }
         });
-        startTimer(10);
+        startTimer(1000 / 60);
 	}
 	void timerEvent(QTimerEvent *)
 	{

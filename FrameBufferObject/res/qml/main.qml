@@ -7,14 +7,14 @@ import QtQuick.Window 2.2
 
 Item {
     id:root
-    width: Screen.width
-    height: Screen.height
+    width: Screen.width / 2
+    height: Screen.height / 2
     Shader {
         id:shader
         width: 400
         height:400
-        x:200
-        y:100
+        x:(root.width - width) / 2
+        y:(root.height - height) / 2
         xRotate:0
         yRotate:0
         zRotate:0
@@ -26,19 +26,19 @@ Item {
             },
             State{
                 name:"TopRight"
-                PropertyChanges  {target:shader; x:Screen.width - width; y:0;}
+                PropertyChanges  {target:shader; x:root.width - width; y:0;}
             },
             State{
                 name:"BottomLeft"
-                PropertyChanges  {target:shader; x:0; y:Screen.height - height;}
+                PropertyChanges  {target:shader; x:0; y:root.height - height;}
             },
             State{
                 name:"BottomRight"
-                PropertyChanges  {target:shader; x:Screen.width - width; y:Screen.height - height;}
+                PropertyChanges  {target:shader; x:root.width - width; y:root.height - height;}
             },
             State{
                 name:"Middle"
-                PropertyChanges  {target:shader; x:(Screen.width - width)/2; y:(Screen.height - height) / 2;}
+                PropertyChanges  {target:shader; x:(root.width - width)/2; y:(root.height - height) / 2;}
             }
         ]
         transitions: Transition {
