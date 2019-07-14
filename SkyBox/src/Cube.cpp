@@ -7,13 +7,13 @@ struct VertexData
     QVector3D position;
     QVector2D texCoord;
 };
-Cube::Cube()
-    : m_indexBuf(QOpenGLBuffer::IndexBuffer)
+Cube::Cube(GLFuncName *func)
+    : m_func(func)
+    , m_indexBuf(QOpenGLBuffer::IndexBuffer)
     , m_vertexShader(QOpenGLShader::Vertex)
     , m_fragmentShader(QOpenGLShader::Fragment)
     , m_texture(QOpenGLTexture::Target2D)
 {
-    initializeOpenGLFunctions();
     initBuffer();
     initShader();
     initTexture();
@@ -31,40 +31,40 @@ void Cube::initBuffer()
 
     VertexData vertices[] = {
         // Vertex data for face 0
-        {QVector3D(-1.0f, -1.0f,  1.0f), QVector2D(0.0f, 0.0f)},  // v0
-        {QVector3D( 1.0f, -1.0f,  1.0f), QVector2D(0.33f, 0.0f)}, // v1
-        {QVector3D(-1.0f,  1.0f,  1.0f), QVector2D(0.0f, 0.5f)},  // v2
-        {QVector3D( 1.0f,  1.0f,  1.0f), QVector2D(0.33f, 0.5f)}, // v3
+        {QVector3D(-0.5f, -0.5f,  0.5f), QVector2D(0.0f, 0.0f)},  // v0
+        {QVector3D( 0.5f, -0.5f,  0.5f), QVector2D(0.33f, 0.0f)}, // v1
+        {QVector3D(-0.5f,  0.5f,  0.5f), QVector2D(0.0f, 0.5f)},  // v2
+        {QVector3D( 0.5f,  0.5f,  0.5f), QVector2D(0.33f, 0.5f)}, // v3
 
         // Vertex data for face 1
-        {QVector3D( 1.0f, -1.0f,  1.0f), QVector2D( 0.0f, 0.5f)}, // v4
-        {QVector3D( 1.0f, -1.0f, -1.0f), QVector2D(0.33f, 0.5f)}, // v5
-        {QVector3D( 1.0f,  1.0f,  1.0f), QVector2D(0.0f, 1.0f)},  // v6
-        {QVector3D( 1.0f,  1.0f, -1.0f), QVector2D(0.33f, 1.0f)}, // v7
+        {QVector3D( 0.5f, -0.5f,  0.5f), QVector2D( 0.0f, 0.5f)}, // v4
+        {QVector3D( 0.5f, -0.5f, -0.5f), QVector2D(0.33f, 0.5f)}, // v5
+        {QVector3D( 0.5f,  0.5f,  0.5f), QVector2D(0.0f, 1.0f)},  // v6
+        {QVector3D( 0.5f,  0.5f, -0.5f), QVector2D(0.33f, 1.0f)}, // v7
 
         // Vertex data for face 2
-        {QVector3D( 1.0f, -1.0f, -1.0f), QVector2D(0.66f, 0.5f)}, // v8
-        {QVector3D(-1.0f, -1.0f, -1.0f), QVector2D(1.0f, 0.5f)},  // v9
-        {QVector3D( 1.0f,  1.0f, -1.0f), QVector2D(0.66f, 1.0f)}, // v10
-        {QVector3D(-1.0f,  1.0f, -1.0f), QVector2D(1.0f, 1.0f)},  // v11
+        {QVector3D( 0.5f, -0.5f, -0.5f), QVector2D(0.66f, 0.5f)}, // v8
+        {QVector3D(-0.5f, -0.5f, -0.5f), QVector2D(1.0f, 0.5f)},  // v9
+        {QVector3D( 0.5f,  0.5f, -0.5f), QVector2D(0.66f, 1.0f)}, // v10
+        {QVector3D(-0.5f,  0.5f, -0.5f), QVector2D(1.0f, 1.0f)},  // v11
 
         // Vertex data for face 3
-        {QVector3D(-1.0f, -1.0f, -1.0f), QVector2D(0.66f, 0.0f)}, // v12
-        {QVector3D(-1.0f, -1.0f,  1.0f), QVector2D(1.0f, 0.0f)},  // v13
-        {QVector3D(-1.0f,  1.0f, -1.0f), QVector2D(0.66f, 0.5f)}, // v14
-        {QVector3D(-1.0f,  1.0f,  1.0f), QVector2D(1.0f, 0.5f)},  // v15
+        {QVector3D(-0.5f, -0.5f, -0.5f), QVector2D(0.66f, 0.0f)}, // v12
+        {QVector3D(-0.5f, -0.5f,  0.5f), QVector2D(1.0f, 0.0f)},  // v13
+        {QVector3D(-0.5f,  0.5f, -0.5f), QVector2D(0.66f, 0.5f)}, // v14
+        {QVector3D(-0.5f,  0.5f,  0.5f), QVector2D(1.0f, 0.5f)},  // v15
 
         // Vertex data for face 4
-        {QVector3D(-1.0f, -1.0f, -1.0f), QVector2D(0.33f, 0.0f)}, // v16
-        {QVector3D( 1.0f, -1.0f, -1.0f), QVector2D(0.66f, 0.0f)}, // v17
-        {QVector3D(-1.0f, -1.0f,  1.0f), QVector2D(0.33f, 0.5f)}, // v18
-        {QVector3D( 1.0f, -1.0f,  1.0f), QVector2D(0.66f, 0.5f)}, // v19
+        {QVector3D(-0.5f, -0.5f, -0.5f), QVector2D(0.33f, 0.0f)}, // v16
+        {QVector3D( 0.5f, -0.5f, -0.5f), QVector2D(0.66f, 0.0f)}, // v17
+        {QVector3D(-0.5f, -0.5f,  0.5f), QVector2D(0.33f, 0.5f)}, // v18
+        {QVector3D( 0.5f, -0.5f,  0.5f), QVector2D(0.66f, 0.5f)}, // v19
 
         // Vertex data for face 5
-        {QVector3D(-1.0f,  1.0f,  1.0f), QVector2D(0.33f, 0.5f)}, // v20
-        {QVector3D( 1.0f,  1.0f,  1.0f), QVector2D(0.66f, 0.5f)}, // v21
-        {QVector3D(-1.0f,  1.0f, -1.0f), QVector2D(0.33f, 1.0f)}, // v22
-        {QVector3D( 1.0f,  1.0f, -1.0f), QVector2D(0.66f, 1.0f)}  // v23
+        {QVector3D(-0.5f,  0.5f,  0.5f), QVector2D(0.33f, 0.5f)}, // v20
+        {QVector3D( 0.5f,  0.5f,  0.5f), QVector2D(0.66f, 0.5f)}, // v21
+        {QVector3D(-0.5f,  0.5f, -0.5f), QVector2D(0.33f, 1.0f)}, // v22
+        {QVector3D( 0.5f,  0.5f, -0.5f), QVector2D(0.66f, 1.0f)}  // v23
     };
     // Indices for drawing cube faces using triangle strips.
     // Triangle strips can be connected by duplicating indices
@@ -83,8 +83,8 @@ void Cube::initBuffer()
     };
     m_indexCount = sizeof indices / sizeof(indices[0]);
 
-    glGenVertexArrays(1, &m_vao);
-    glBindVertexArray(m_vao);
+    m_func->glGenVertexArrays(1, &m_vao);
+    m_func->glBindVertexArray(m_vao);
 
     m_indexBuf.bind();
     m_indexBuf.allocate(indices, sizeof indices);
@@ -93,14 +93,14 @@ void Cube::initBuffer()
     m_arrayBuf.allocate(vertices, sizeof vertices);
 
     const int positionLocation = 0;
-    glEnableVertexAttribArray(positionLocation);
-    glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, sizeof (VertexData), nullptr);
+    m_func->glEnableVertexAttribArray(positionLocation);
+    m_func->glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, sizeof (VertexData), nullptr);
 
     const int texCoordLocation =  1;
-    glEnableVertexAttribArray(texCoordLocation);
-    glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void *)(sizeof (QVector3D)));
+    m_func->glEnableVertexAttribArray(texCoordLocation);
+    m_func->glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void *)(sizeof (QVector3D)));
 
-    glBindVertexArray(0);
+    m_func->glBindVertexArray(0);
 }
 
 void Cube::initShader()
@@ -153,12 +153,12 @@ void Cube::draw(QOpenGLShaderProgram &program, const QMatrix4x4 &model, const QM
         qWarning() << program.log();
         return;
     }
-    program.setUniformValue("mvp", project * model);
+    program.setUniformValue("mvp", project * view * model);
 
     m_texture.bind();
     program.setUniformValue("cubeTexture", 0);
 
-    glBindVertexArray(m_vao);
+    m_func->glBindVertexArray(m_vao);
 
-    glDrawElements(GL_TRIANGLE_STRIP, m_indexCount, GL_UNSIGNED_SHORT, nullptr);
+    m_func->glDrawElements(GL_TRIANGLE_STRIP, m_indexCount, GL_UNSIGNED_SHORT, nullptr);
 }

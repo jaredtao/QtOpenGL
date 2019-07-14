@@ -1,10 +1,10 @@
 #pragma once
 #include "GLHeaders.h"
 
-class SkyBox : public GLFuncName
+class SkyBox
 {
 public:
-    SkyBox();
+    SkyBox(GLFuncName *func);
     ~SkyBox();
     void draw(QOpenGLShaderProgram &program, const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &project);
 private:
@@ -12,12 +12,13 @@ private:
     void initShader();
     void initTexture();
 private:
+    GLFuncName *m_func;
     QOpenGLBuffer m_arrayBuf;
-    QOpenGLBuffer m_indexBuf;
     QOpenGLShader m_vertexShader;
     QOpenGLShader m_fragmentShader;
-    QOpenGLTexture m_texture;
+    QImage m_images[6];
+    quint32 m_cubeTexture;
     quint32 m_vao;
-    int m_indexCount = 0;
+    int m_vertexCount = 0;
 };
 

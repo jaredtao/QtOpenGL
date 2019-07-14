@@ -77,6 +77,12 @@ Qt5写的一些OpenGL小例子集合,
 
   ![CubeMap](img/CubeMap.png)
 
+* SkyBox
+ 
+  重写的天空盒， 可以键盘和鼠标操作
+
+  ![SkyBox](img/SkyBox.png)
+
 ### 联系方式:
 
 ***

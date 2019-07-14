@@ -4,6 +4,7 @@
 #include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
+#include <QOpenGLContext>
 #ifdef _DEBUG
 #include <QOpenGLDebugLogger>
 #endif

@@ -1,10 +1,10 @@
 #pragma once
 #include "GLHeaders.h"
 
-class Cube: public GLFuncName
+class Cube
 {
 public:
-    Cube();
+    Cube(GLFuncName *func);
     ~Cube();
     void draw(QOpenGLShaderProgram &program, const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &project);
 private:
@@ -12,6 +12,7 @@ private:
     void initShader();
     void initTexture();
 private:
+    GLFuncName *m_func;
     QOpenGLBuffer m_arrayBuf;
     QOpenGLBuffer m_indexBuf;
     QOpenGLShader m_vertexShader;
