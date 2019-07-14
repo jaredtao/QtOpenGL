@@ -10,5 +10,6 @@ SUBDIRS += \
     FrameBufferObject \
     material \
     DepthTest \
-    CubeMap
+    CubeMap \
+    SkyBox
 OTHER_FILES += README.md
