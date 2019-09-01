@@ -5,6 +5,7 @@
 #include "GLHeaders.h"
 #include "Cube.h"
 #include "SkyBox.h"
+#include <memory>
 class TWindow : public QOpenGLWidget, public GLFuncName
 {
 public:
