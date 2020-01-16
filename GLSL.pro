@@ -3,6 +3,7 @@ SUBDIRS += \
     HelloTexture \
     HelloMix \
     HelloCube \
+    HelloFBO \
     QuickOpenGL \
     light \
     lightCasters \
@@ -12,4 +13,8 @@ SUBDIRS += \
     DepthTest \
     CubeMap \
     SkyBox
-OTHER_FILES += README.md
+OTHER_FILES += \
+    README.md \
+    .clang-format \
+    LICENSE \
+    .github/workflows/*.yml

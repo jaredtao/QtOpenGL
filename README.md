@@ -6,6 +6,32 @@ Qt5写的一些OpenGL小例子集合,
 ## License
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jaredtao/HelloDirectX/blob/master/LICENSE)
 
+# CI徽章
+
+|[License][license-link]| [Windows][win-link]|[MacOS][macos-link]| [Ubuntu][ubuntu-link]|[Android][android-link]|[IOS][ios-link]|
+|---------------|---------------|---------------|-----------------|-----------------|----------------|
+|![license-badge] | ![win-badge]  |![macos-badge] | ![ubuntu-badge]      | ![android-badge]   |![ios-badge]   |
+
+
+
+[win-link]: https://github.com/JaredTao/QtOpenGL/actions?query=workflow%3AWindows "WindowsAction"
+[win-badge]: https://github.com/JaredTao/QtOpenGL/workflows/Windows/badge.svg  "Windows"
+
+[ubuntu-link]: https://github.com/JaredTao/QtOpenGL/actions?query=workflow%3AUbuntu "UbuntuAction"
+[ubuntu-badge]: https://github.com/JaredTao/QtOpenGL/workflows/Ubuntu/badge.svg "Ubuntu"
+
+[macos-link]: https://github.com/JaredTao/QtOpenGL/actions?query=workflow%3AMacOS "MacOSAction"
+[macos-badge]: https://github.com/JaredTao/QtOpenGL/workflows/MacOS/badge.svg "MacOS"
+
+[android-link]: https://github.com/JaredTao/QtOpenGL/actions?query=workflow%3AAndroid "AndroidAction"
+[android-badge]: https://github.com/JaredTao/QtOpenGL/workflows/Android/badge.svg "Android"
+
+[ios-link]: https://github.com/JaredTao/QtOpenGL/actions?query=workflow%3AIOS "IOSAction"
+[ios-badge]: https://github.com/JaredTao/QtOpenGL/workflows/IOS/badge.svg "IOS"
+
+[license-link]: https://github.com/jaredtao/QtOpenGL/blob/master/LICENSE "LICENSE"
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg "MIT"
+
 ## 目录
 
 * HelloTexture    
@@ -71,43 +97,35 @@ Qt5写的一些OpenGL小例子集合,
 
   ![DepthTest](img/DepthTest.png)
 
-* CubeMap
-
-  天空盒 (效果有点问题，后续修改)
-
-  ![CubeMap](img/CubeMap.png)
-
 * SkyBox
  
-  重写的天空盒， 可以键盘和鼠标操作
+    天空盒， 可以键盘和鼠标操作
 
   ![SkyBox](img/SkyBox.png)
 
+* HelloFBO
 
-### 联系方式:
+    帧缓冲的使用
+    
+    反相处理效果如下:
 
-***
+  ![HelloFBO](img/HelloFBO.png)
 
-| 作者 | 涛哥                           |
+# 赞助
+
+如果您觉得这个项目还不错，请打赏一下作者。
+
+<img src="https://gitee.com/jaredtao/jaredtao/raw/master/img/weixin.jpg?raw=true" width="25%" height="25%" /><img src="https://gitee.com/jaredtao/jaredtao/raw/master/img/zhifubao.jpg?raw=true" width="25%" height="25%" />
+
+# 联系作者
+
+|-|-|
 | ---- | -------------------------------- |
-|开发理念 | 传承工匠精神 |
-| QQ   | 759378563                  |
-| 微信 | xsd2410421                       |
+| 作者 | 武威的涛哥                           |
+| 博客 | https://jaredtao.github.io/ |
+| 博客-gitee镜像|https://jaredtao.gitee.io|
+| 知乎专栏| https://zhuanlan.zhihu.com/TaoQt |
+| QQ群| 734623697(高质量群，大佬多、不灌水）|
 | 邮箱 | jared2020@163.com                |
-| blog | https://jaredtao.github.io |
-
-***
-
-QQ(TIM)、微信二维码
-
-<img src="https://gitee.com/jaredtao/jaredtao/raw/master/img/qq_connect.jpg?raw=true" width="30%" height="30%" /><img src="https://gitee.com/jaredtao/jaredtao/raw/master/img/weixin_connect.jpg?raw=true" width="30%" height="30%" />
-
-
-###### 请放心联系我，乐于提供咨询服务，也可洽谈有偿技术支持相关事宜。
-
-***
-#### **打赏**
-<img src="https://gitee.com/jaredtao/jaredtao/raw/master/img/weixin.jpg?raw=true" width="30%" height="30%" /><img src="https://gitee.com/jaredtao/jaredtao/raw/master/img/zhifubao.jpg?raw=true" width="30%" height="30%" />
-
-###### 觉得分享的内容还不错, 就请作者喝杯奶茶吧~~
-***
+| 微信 | xsd2410421                       |
+| QQ、TIM | 759378563                      |
