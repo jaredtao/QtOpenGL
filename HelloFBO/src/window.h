@@ -4,7 +4,7 @@
 #include "cube.h"
 #include <QTimer>
 #include <QMatrix4x4>
-#include <QOpenGLFunctions_3_3_Core>
+#include <QOpenGLExtraFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QOpenGLWindow>
@@ -17,7 +17,7 @@
 
 class Cube;
 
-class Window : public QOpenGLWindow, public QOpenGLFunctions_3_3_Core
+class Window : public QOpenGLWindow, public QOpenGLExtraFunctions
 {
     Q_OBJECT
 public:

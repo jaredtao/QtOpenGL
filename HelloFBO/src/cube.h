@@ -2,11 +2,11 @@
 #define CUBE_H
 
 
-#include <QOpenGLFunctions_3_3_Core>
+#include <QOpenGLExtraFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 
-class Cube : protected QOpenGLFunctions_3_3_Core
+class Cube : protected QOpenGLExtraFunctions
 {
 public:
     Cube();
