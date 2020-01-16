@@ -3,9 +3,6 @@
 Qt5写的一些OpenGL小例子集合,
 参考[LearnOpenGL教程](http://bullteacher.com/category/zh_learnopengl_com)
 
-## License
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jaredtao/HelloDirectX/blob/master/LICENSE)
-
 # CI徽章
 
 |[License][license-link]| [Windows][win-link]|[MacOS][macos-link]| [Ubuntu][ubuntu-link]|[Android][android-link]|[IOS][ios-link]|
