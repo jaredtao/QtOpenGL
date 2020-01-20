@@ -9,6 +9,9 @@
 #include <QTime>
 #include <QtMath>
 
+#ifdef Q_OS_ANDROID
+#include <qopengles2ext.h>
+#endif
 Window::Window(QWindow *parent) : QOpenGLWindow(QOpenGLWindow::UpdateBehavior::NoPartialUpdate, parent)
 {
     setWidth(800);
@@ -169,7 +172,7 @@ void Window::initFBO()
 
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width(), height());
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width(), height());
 
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
