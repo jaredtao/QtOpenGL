@@ -1,7 +1,7 @@
 #pragma once
 #include <QOpenGLShaderProgram>
 #include <QMatrix4x4>
-#include <QOpenGLFunctions_3_3_Core>
+#include <QOpenGLExtraFunctions>
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
 #include <QOpenGLContext>
@@ -9,4 +9,4 @@
 #include <QOpenGLDebugLogger>
 #endif
 
-#define GLFuncName QOpenGLFunctions_3_3_Core
+#define GLFuncName QOpenGLExtraFunctions

@@ -1,4 +1,4 @@
-﻿#ifndef RENDER_H
+#ifndef RENDER_H
 #define RENDER_H
 
 #include <QMatrix4x4>
@@ -6,10 +6,10 @@
 #include <QOpenGLShader>
 #include <QOpenGLTexture>
 #include <QOpenGLContext>
-#include <QOpenGLFunctions_3_3_Core>
+#include <QOpenGLExtraFunctions>
 #include <QOpenGLShaderProgram>
 
-class Render : protected QOpenGLFunctions_3_3_Core
+class Render : protected QOpenGLExtraFunctions
 {
 public:
 	Render();
