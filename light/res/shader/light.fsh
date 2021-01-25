@@ -1,3 +1,5 @@
+#version 330 core
+
 #ifdef GL_ES
 // Set default precision to medium
 precision mediump int;
@@ -5,9 +7,9 @@ precision mediump float;
 #endif
 uniform vec3 lightColor;
 
-varying vec2 v_texcoord;
-
+in vec2 v_texcoord;
+out vec4 fragColor;
 void main(void)
 {
-    gl_FragColor = vec4(lightColor, 1.0);
+    fragColor = vec4(lightColor, 1.0);
 }

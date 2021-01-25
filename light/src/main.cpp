@@ -1,27 +1,25 @@
-#include <QApplication>
-#include <QLabel>
+#include <QGuiApplication>
 #include <QSurfaceFormat>
 
-#ifndef QT_NO_OPENGL
-#include "window.h"
-#endif
-
+#include "Window.h"
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
 
     QSurfaceFormat format;
+    format.setMajorVersion(3);
+    format.setMinorVersion(3);
+    format.setProfile(QSurfaceFormat::CoreProfile);
     format.setDepthBufferSize(24);
+    format.setOption(QSurfaceFormat::DebugContext);
     QSurfaceFormat::setDefaultFormat(format);
 
     app.setApplicationName("cube");
     app.setApplicationVersion("0.1");
-#ifndef QT_NO_OPENGL
+
 	Window win;
+    win.resize(1024, 760);
 	win.show();
-#else
-    QLabel note("OpenGL Support required");
-    note.show();
-#endif
+
 	return app.exec();
 }

@@ -5,15 +5,12 @@
 #include <QtMath>
 
 
-Window::Window(QWidget *parent):
-    QOpenGLWidget(parent) ,
+Window::Window(QWindow *):
+    QOpenGLWindow() ,
     materialV(nullptr),
     materialF(nullptr),
     lightF(nullptr),
-    lightV(nullptr),
-    cube(0),
-    texture(0),
-    angularSpeed(0)
+    lightV(nullptr), cube(0), texture(0), angularSpeed(0), debugger(this)
 {
     fps = 60.0;
     connect(&timer, SIGNAL(timeout()), this, SLOT(processTimeout()));
@@ -28,6 +25,10 @@ Window::~Window()
     delete lightV;
     delete texture;
     delete cube;
+    if (debugger.isLogging())
+    {
+        debugger.stopLogging();
+    }
     doneCurrent();
 }
 void Window::mousePressEvent(QMouseEvent *e)
@@ -57,7 +58,9 @@ void Window::mouseReleaseEvent(QMouseEvent *e)
 void Window::initializeGL()
 {
     initializeOpenGLFunctions();
-
+    debugger.initialize();
+    connect(&debugger, &QOpenGLDebugLogger::messageLogged, this, &Window::onDebugMessage);
+    debugger.startLogging();
     glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
 
@@ -67,6 +70,10 @@ void Window::initializeGL()
     cube = new Cube;
 
 
+}
+void Window::onDebugMessage(const QOpenGLDebugMessage &debugMessage) 
+{
+    qWarning() << debugMessage.message();
 }
 void Window::processTimeout()
 {
@@ -265,7 +272,7 @@ void Window::paintFPS()
         qDebug() << "\033[32m" << fps<< "\033[0m";
 
         QString str = QString("FPS:%1").arg(QString::number(fps, 'f', 3));
-        this->setWindowTitle(str);
+        setTitle(str);
     }
 }
 

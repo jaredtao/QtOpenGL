@@ -3,7 +3,7 @@
 
 #include "cube.h"
 
-#include <QOpenGLWidget>
+#include <QOpenGLWindow>
 #include <QOpenGLFunctions>
 #include <QMatrix4x4>
 #include <QQuaternion>
@@ -12,15 +12,15 @@
 #include <QTimer>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
-
+#include <QOpenGLDebugLogger>
 
 class Cube;
 
-class Window: public QOpenGLWidget, protected QOpenGLFunctions
+class Window: public QOpenGLWindow, protected QOpenGLFunctions
 {
 	Q_OBJECT
 public:
-    explicit Window(QWidget *parent = 0);
+    explicit Window(QWindow *parent = 0);
     ~Window();
 protected:
 
@@ -38,6 +38,7 @@ protected:
 	void useMaterialShader();
 private slots:
 	void processTimeout();
+    void onDebugMessage(const QOpenGLDebugMessage &debugMessage);
 private:
 
     void calcFPS();
@@ -65,6 +66,8 @@ private:
     qreal angularSpeed;
     QQuaternion rotation;
     qreal fps;
+
+    QOpenGLDebugLogger debugger;
 };
 
 #endif // WINDOW_H

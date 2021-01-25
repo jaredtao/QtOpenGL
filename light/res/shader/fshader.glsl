@@ -1,3 +1,5 @@
+#version 330 core
+
 #ifdef GL_ES
 // Set default precision to medium
 precision mediump int;
@@ -9,9 +11,11 @@ uniform sampler2D texture;
 uniform vec3 viewPos;
 
 
-varying vec2 v_texcoord;
-varying vec3 v_normal;
-varying vec3 v_fragPos;
+in vec2 v_texcoord;
+in vec3 v_normal;
+in vec3 v_fragPos;
+
+out vec4 fragColor;
 //! [0]
 void main()
 {
@@ -28,7 +32,7 @@ void main()
     vec3 diffuse  = diff * lightColor;
 
     //纹理颜色
-    vec4 rgb = texture2D(texture, v_texcoord);
+    vec4 rgb = texture(texture, v_texcoord);
 
     //镜面高光
     float specularStrength = 0.9f;
@@ -37,17 +41,9 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
 
-    gl_FragColor = vec4(ambient + diffuse + specular, 1.0) * rgb;
+    fragColor = vec4(ambient + diffuse + specular, 1.0) * rgb;
+    fragColor = vec4(0.2, 0.3, 0.4, 1.0);
 
-    //    gl_FragColor = vec4(ambient + diffuse, 1.0) * rgb;
-
-    //    vec4 result = vec4(ambient, 1.0) * rgb;
-    //    gl_FragColor = result;
-
-
-    //general frag color
-    // Set fragment color from texture
-    //    gl_FragColor = texture2D(texture, v_texcoord);
 
 }
 //! [0]

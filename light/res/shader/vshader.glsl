@@ -1,3 +1,5 @@
+#version 330 core
+
 #ifdef GL_ES
 // Set default precision to medium
 precision mediump int;
@@ -7,13 +9,14 @@ uniform mat4 modelMat;
 uniform mat4 viewMat;
 uniform mat4 projectMat;
 
-attribute vec3 a_position;
-attribute vec2 a_texcoord;
-attribute vec3 a_normal;
+in vec3 a_position;
+in vec2 a_texcoord;
+in vec3 a_normal;
 
-varying vec2 v_texcoord;
-varying vec3 v_normal;
-varying vec3 v_fragPos;
+out vec2 v_texcoord;
+out vec3 v_normal;
+out vec3 v_fragPos;
+
 void main()
 {
     // Calculate vertex position in screen space
