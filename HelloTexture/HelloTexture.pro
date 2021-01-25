@@ -1,6 +1,6 @@
 QT += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG += utf8_source
 TEMPLATE = app
 
 HEADERS += \
@@ -14,3 +14,4 @@ RESOURCES += \
     res/img.qrc \
     res/shader.qrc
 
+include($$PWD/../Common/Common.pri)

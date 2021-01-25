@@ -8,7 +8,9 @@ precision mediump float;
 uniform vec3 lightColor;
 
 in vec2 v_texcoord;
+
 out vec4 fragColor;
+
 void main(void)
 {
     fragColor = vec4(lightColor, 1.0);

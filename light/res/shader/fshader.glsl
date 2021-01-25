@@ -5,17 +5,18 @@
 precision mediump int;
 precision mediump float;
 #endif
+
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform sampler2D texture;
 uniform vec3 viewPos;
-
 
 in vec2 v_texcoord;
 in vec3 v_normal;
 in vec3 v_fragPos;
 
 out vec4 fragColor;
+
 //! [0]
 void main()
 {
@@ -42,9 +43,6 @@ void main()
     vec3 specular = specularStrength * spec * lightColor;
 
     fragColor = vec4(ambient + diffuse + specular, 1.0) * rgb;
-    fragColor = vec4(0.2, 0.3, 0.4, 1.0);
-
-
 }
 //! [0]
 

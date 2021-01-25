@@ -1,4 +1,5 @@
 TEMPLATE = subdirs
+CONFIG += ordered
 SUBDIRS += \
     HelloTexture \
     HelloMix \
@@ -12,6 +13,7 @@ SUBDIRS += \
     material \
     DepthTest \
     SkyBox
+
 OTHER_FILES += \
     README.md \
     .clang-format \

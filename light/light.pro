@@ -5,10 +5,10 @@
 #-------------------------------------------------
 
 QT       += core gui
-
-CONFIG += c+=11
+CONFIG += c++11 utf8_source
 
 TEMPLATE = app
+DEFINES += GL_DEBUG
 
 HEADERS += \
     src/cube.h \
@@ -24,4 +24,4 @@ RESOURCES += \
     res/texture.qrc
 
 
-
+include($$PWD/../Common/Common.pri)

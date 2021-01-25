@@ -10,10 +10,12 @@ uniform mat4 modelMat;
 uniform mat4 viewMat;
 uniform mat4 projectMat;
 
-in vec4 a_position;
-in vec2 a_texcoord;
+layout (location = 0) in vec4 a_position;
+layout (location = 1) in vec2 a_texcoord;
+layout (location = 2) in vec2 a_normal;
 
 out vec2 v_texcoord;
+
 void main(void)
 {
     v_texcoord = a_texcoord;

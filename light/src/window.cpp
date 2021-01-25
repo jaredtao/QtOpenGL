@@ -4,17 +4,9 @@
 #include <QPainter>
 #include <QtMath>
 
-
-Window::Window(QWindow *):
-    QOpenGLWindow() ,
-    materialV(nullptr),
-    materialF(nullptr),
-    lightF(nullptr),
-    lightV(nullptr), cube(0), texture(0), angularSpeed(0), debugger(this)
+Window::Window(QWindow *parent)
+    : GLWindow(NoPartialUpdate, parent), materialV(nullptr), materialF(nullptr), lightF(nullptr), lightV(nullptr), cube(0), texture(0), angularSpeed(0)
 {
-    fps = 60.0;
-    connect(&timer, SIGNAL(timeout()), this, SLOT(processTimeout()));
-    timer.start(1000 / 60);
 }
 Window::~Window()
 {
@@ -25,10 +17,6 @@ Window::~Window()
     delete lightV;
     delete texture;
     delete cube;
-    if (debugger.isLogging())
-    {
-        debugger.stopLogging();
-    }
     doneCurrent();
 }
 void Window::mousePressEvent(QMouseEvent *e)
@@ -57,23 +45,21 @@ void Window::mouseReleaseEvent(QMouseEvent *e)
 
 void Window::initializeGL()
 {
-    initializeOpenGLFunctions();
-    debugger.initialize();
-    connect(&debugger, &QOpenGLDebugLogger::messageLogged, this, &Window::onDebugMessage);
-    debugger.startLogging();
+    GLWindow::initializeGL();
+
     glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
 
     initShaders();
     initTextures();
     initMatrixs();
-    cube = new Cube;
-
-
+    useLightShader();
+    cube = new Cube(&program);
 }
-void Window::onDebugMessage(const QOpenGLDebugMessage &debugMessage) 
+void Window::timerEvent(QTimerEvent *event)
 {
-    qWarning() << debugMessage.message();
+    processTimeout();
+    GLWindow::timerEvent(event);
 }
 void Window::processTimeout()
 {
@@ -89,18 +75,16 @@ void Window::processTimeout()
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
         // Request an update
-
     }
-    update();
 }
 void Window::useMaterialShader()
 {
     program.removeAllShaders();
 
-    if(!program.addShader(materialV)) {
+    if (!program.addShader(materialV)) {
         qDebug() << "add vertex shader file failed.";
     }
-    if (!program.addShader(materialF) ) {
+    if (!program.addShader(materialF)) {
         qDebug() << "add fragment shader file failed.";
     }
     if (!program.link()) {
@@ -113,17 +97,17 @@ void Window::useMaterialShader()
 void Window::useLightShader()
 {
     program.removeAllShaders();
-    if(!program.addShader(lightV)) {
+    if (!program.addShader(lightV)) {
         qDebug() << "add vertex shader file failed.";
     }
-    if (!program.addShader(lightF) ) {
+    if (!program.addShader(lightF)) {
         qDebug() << "add fragment shader file failed.";
     }
     if (!program.link()) {
-        qDebug() << "program link failed";
+        qDebug() << "program link failed" << program.log();
     }
     if (!program.bind()) {
-        qDebug() << "program bind failed";
+        qDebug() << "program bind failed" << program.log();
     }
 }
 void Window::initShaders()
@@ -152,7 +136,6 @@ void Window::initShaders()
     if (!ret) {
         qDebug() << "compile shader failed -4";
     }
-
 }
 void Window::initTextures()
 {
@@ -173,9 +156,10 @@ void Window::initMatrixs()
 }
 void Window::resizeGL(int w, int h)
 {
+    GLWindow::resizeGL(w, h);
     Q_ASSERT(h);
     glViewport(0, 0, w, h);
-    float ratio = (float) w / h;
+    float ratio = (float)w / h;
     float aspect = 45;
     projection.setToIdentity();
     projection.perspective(aspect, ratio, 1.0f, 100.0f);
@@ -188,12 +172,12 @@ void Window::paintGL()
     static float angle = 0;
     angle += 10;
     float radian = qDegreesToRadians(angle);
-    float ratio = sin(radian) ;
+    float ratio = sin(radian);
     lightPos = QVector3D(ratio * 2.0f, 0.1f, 1.0f);
 
-//    lightColor.setX(sin(qDegreesToRadians(angle)) * 2.0);
-//    lightColor.setY(sin(qDegreesToRadians(angle)) * 0.7);
-//    lightColor.setZ(sin(qDegreesToRadians(angle)) * 1.3);
+    //    lightColor.setX(sin(qDegreesToRadians(angle)) * 2.0);
+    //    lightColor.setY(sin(qDegreesToRadians(angle)) * 0.7);
+    //    lightColor.setZ(sin(qDegreesToRadians(angle)) * 1.3);
 
     {
         useLightShader();
@@ -201,9 +185,9 @@ void Window::paintGL()
         model.setToIdentity();
 
         model.translate(lightPos);
-        int modelLoc    = program.uniformLocation("modelMat");
-        int projectLoc  = program.uniformLocation("projectMat");
-        int viewLoc     = program.uniformLocation("viewMat");
+        int modelLoc = program.uniformLocation("modelMat");
+        int projectLoc = program.uniformLocation("projectMat");
+        int viewLoc = program.uniformLocation("viewMat");
         program.setUniformValue(modelLoc, model);
         program.setUniformValue(projectLoc, projection);
         program.setUniformValue(viewLoc, view);
@@ -213,13 +197,13 @@ void Window::paintGL()
 
     {
         useMaterialShader();
-        int viewPosLoc    = program.uniformLocation("viewPos");
+        int viewPosLoc = program.uniformLocation("viewPos");
         program.setUniformValue(viewPosLoc, QVector3D(0.0f, 0.0f, 3.0f));
 
         int lightColorLoc = program.uniformLocation("lightColor");
         program.setUniformValue(lightColorLoc, lightColor);
 
-        int lightPosLoc   = program.uniformLocation("lightPos");
+        int lightPosLoc = program.uniformLocation("lightPos");
         program.setUniformValue(lightPosLoc, lightPos);
 
         glActiveTexture(GL_TEXTURE0);
@@ -230,9 +214,9 @@ void Window::paintGL()
         model.setToIdentity();
         model.translate(0.0, 0.0, -3.0);
         model.rotate(rotation);
-        int modelLoc    = program.uniformLocation("modelMat");
-        int projectLoc  = program.uniformLocation("projectMat");
-        int viewLoc     = program.uniformLocation("viewMat");
+        int modelLoc = program.uniformLocation("modelMat");
+        int projectLoc = program.uniformLocation("projectMat");
+        int viewLoc = program.uniformLocation("viewMat");
         program.setUniformValue(modelLoc, model);
         program.setUniformValue(projectLoc, projection);
         program.setUniformValue(viewLoc, view);
@@ -240,40 +224,12 @@ void Window::paintGL()
         cube->drawCube(&program);
     }
 
-
-    calcFPS();
+    GLWindow::paintGL();
     paintFPS();
 }
 
-void Window::calcFPS()
-{
-    static QTime time;
-    static int once = [=](){time.start(); return 0;}();
-    Q_UNUSED(once)
-
-    static int frame = 0;
-    if (frame++ > 100) {
-        qreal elasped = time.elapsed();
-        updateFPS(frame/ elasped * 1000);
-        time.restart();
-        frame = 0;
-    }
-}
-void Window::updateFPS(qreal v)
-{
-    fps = v;
-}
 void Window::paintFPS()
 {
-    static int count = 0;
-    count++;
-    if (count >= 100) {
-        count = 0;
-        qDebug() << "\033[32m" << fps<< "\033[0m";
-
-        QString str = QString("FPS:%1").arg(QString::number(fps, 'f', 3));
-        setTitle(str);
-    }
+    QString str = QString("FPS:%1").arg(QString::number(mFps, 'f', 3));
+    setTitle(str);
 }
-
-

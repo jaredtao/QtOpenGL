@@ -3,59 +3,55 @@
 
 #include "cube.h"
 
-#include <QOpenGLWindow>
-#include <QOpenGLFunctions>
+#include "GLWindow.h"
+
 #include <QMatrix4x4>
-#include <QQuaternion>
-#include <QVector2D>
-#include <QTime>
-#include <QTimer>
+#include <QOpenGLDebugLogger>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
-#include <QOpenGLDebugLogger>
+#include <QQuaternion>
+#include <QTime>
+#include <QTimer>
+#include <QVector2D>
 
 class Cube;
 
-class Window: public QOpenGLWindow, protected QOpenGLFunctions
+class Window : public GLWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
     explicit Window(QWindow *parent = 0);
     ~Window();
-protected:
 
+protected:
     void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 
-	void initializeGL() Q_DECL_OVERRIDE;
-	void paintGL() Q_DECL_OVERRIDE;
-	void resizeGL(int w, int h) Q_DECL_OVERRIDE;
+    void initializeGL() Q_DECL_OVERRIDE;
+    void paintGL() Q_DECL_OVERRIDE;
+    void resizeGL(int w, int h) Q_DECL_OVERRIDE;
 
-	void initShaders();
-	void initTextures();
-	void initMatrixs();
-	void useLightShader();
-	void useMaterialShader();
-private slots:
-	void processTimeout();
-    void onDebugMessage(const QOpenGLDebugMessage &debugMessage);
+    void initShaders();
+    void initTextures();
+    void initMatrixs();
+    void useLightShader();
+    void useMaterialShader();
+
 private:
-
-    void calcFPS();
-    void updateFPS(qreal);
     void paintFPS();
-
+    void timerEvent(QTimerEvent *event) override;
+private slots:
+    void processTimeout();
 private:
-	QTimer timer;
-	QOpenGLShaderProgram program;
-	QOpenGLShader *materialV, *materialF;
+    QOpenGLShaderProgram program;
+    QOpenGLShader *materialV, *materialF;
     QOpenGLShader *lightF, *lightV;
-    Cube			*cube;
+    Cube *cube;
 
-	QOpenGLTexture *texture;
+    QOpenGLTexture *texture;
 
-	QMatrix4x4 projection;
-	QMatrix4x4 model;
+    QMatrix4x4 projection;
+    QMatrix4x4 model;
     QMatrix4x4 view;
 
     QVector3D lightPos;
@@ -65,9 +61,7 @@ private:
     QVector3D lightColor;
     qreal angularSpeed;
     QQuaternion rotation;
-    qreal fps;
 
-    QOpenGLDebugLogger debugger;
 };
 
 #endif // WINDOW_H
