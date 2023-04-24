@@ -12,7 +12,8 @@ SUBDIRS += \
     FrameBufferObject \
     material \
     DepthTest \
-    SkyBox
+    SkyBox \
+    Instance
 
 OTHER_FILES += \
     README.md \
