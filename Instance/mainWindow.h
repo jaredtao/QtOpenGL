@@ -31,9 +31,8 @@ private:
 	QOpenGLDebugLogger* mLogger = nullptr;
 #endif
 	QOpenGLShaderProgram* mProgram = nullptr;
-	GLuint				  mVBO	   = 0;
+	GLuint				  mVerticesVBO = 0;
+	GLuint				  mInstanceVBO = 0;
 	GLuint				  mVAO	   = 0;
 	QColor				  mColor   = Qt::red;
-	QVector<QVector3D>	  mVertices;
-	uint32_t			  mCount = 0;
 };

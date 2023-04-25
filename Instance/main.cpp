@@ -14,6 +14,7 @@ int main(int argc, char* argv[])
 #endif
 	QSurfaceFormat::setDefaultFormat(fmt);
 
+	qWarning() << "fmt version" << fmt.version();
 	MainWindow w;
 	w.show();
 

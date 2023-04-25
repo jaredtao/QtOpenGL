@@ -11,10 +11,11 @@ precision highp float;
 #endif
 
 layout (location = 0) in vec3 qt_Vertex;
+layout (location = 1) in vec2 qt_Offset;
 
 void main(void)
 {
-    gl_Position = vec4(qt_Vertex, 1.0);
+    gl_Position = vec4(qt_Vertex + vec3(qt_Offset, 0.0), 1.0);
 }
 )";
 
@@ -27,7 +28,7 @@ precision highp int;
 precision highp float;
 #endif
 
-uniform highp vec4 outColor0;
+uniform vec4 outColor0;
 out vec4 fragColor;
 void main(void)
 {
@@ -82,25 +83,54 @@ void MainWindow::initializeGL()
 		qWarning() << mProgram->log();
 		return;
 	}
-	initVertices();
-	glGenBuffers(1, &mVBO);
-	glGenVertexArrays(1, &mVAO);
+	QVector<QVector3D> vertices = {
+		QVector3D { -0.05, 0.05, 1.0 }, QVector3D { 0.05, -0.05, 1.0 }, QVector3D { -0.05, -0.05, 1.0 },
 
-	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * mVertices.size(), mVertices.constData(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+		QVector3D { -0.05, 0.05, 1.0 }, QVector3D { 0.05, -0.05, 1.0 }, QVector3D { 0.05, 0.05, 1.0 },
+	};
+	QVector<QVector2D> offsets;
+	float			   offset = 0.1f;
 
-	const uint32_t vertexLocation = 0;
-	glBindVertexArray(mVAO);
+	for (int i = -10; i < 10; i += 2)
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-		glEnableVertexAttribArray(vertexLocation);
-		glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), (void*)0);
-
-		glVertexAttribDivisor(vertexLocation, 1);
+		for (int j = -10; j < 10; j += 2)
+		{
+			offsets.append(QVector2D(i / 10.0f + offset, j / 10.0f + offset));
+		}
 	}
-	glBindVertexArray(0);
+	{
+		glGenBuffers(1, &mVerticesVBO);
+		glGenBuffers(1, &mInstanceVBO);
+		glGenVertexArrays(1, &mVAO);
 
+		glBindBuffer(GL_ARRAY_BUFFER, mVerticesVBO);
+		{
+			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * vertices.size(), vertices.constData(), GL_STATIC_DRAW);
+		}
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, mInstanceVBO);
+		{
+			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector2D) * offsets.size(), offsets.constData(), GL_STATIC_DRAW);
+		}
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		const uint32_t vertexLocation = 0;
+		const uint32_t offsetLocation = 1;
+		glBindVertexArray(mVAO);
+		{
+			glEnableVertexAttribArray(vertexLocation);
+			glBindBuffer(GL_ARRAY_BUFFER, mVerticesVBO);
+			glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), (void*)0);
+
+			glEnableVertexAttribArray(offsetLocation);
+			glBindBuffer(GL_ARRAY_BUFFER, mInstanceVBO);
+			glVertexAttribPointer(offsetLocation, 2, GL_FLOAT, GL_FALSE, sizeof(QVector2D), (void*)0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glVertexAttribDivisor(offsetLocation, 1);
+		}
+		glBindVertexArray(0);
+	}
 	startTimer(1000 / 60);
 }
 
@@ -122,8 +152,7 @@ void MainWindow::paintGL()
 	mProgram->setUniformValue("outColor0", mColor);
 	glBindVertexArray(mVAO);
 	{
-		//		glDrawArrays(GL_TRIANGLE_FAN, 0, mVertices.size());
-		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, mVertices.size(), mCount);
+		glDrawArraysInstanced(GL_TRIANGLES, 0, 6, 100);
 	}
 	glBindVertexArray(0);
 }
@@ -138,27 +167,27 @@ void MainWindow::timerEvent(QTimerEvent* e)
 
 void MainWindow::initVertices()
 {
-	mCount		  = 1;
-	qreal x		  = 0.01;
-	qreal y		  = 0.01;
-	qreal w		  = 0.03;
-	qreal h		  = 0.02;
-	qreal xOffset = 0.01;
-	qreal yOffset = 0.01;
-	mVertices.clear();
-	for (int i = 0; i < mCount; i++)
-	{
-		mVertices << QVector3D(x, y, 0.0);
-		mVertices << QVector3D(x + w, y, 0.0);
-		mVertices << QVector3D(x + w, y + h, 0.0);
-		mVertices << QVector3D(x, y + h, 0.0);
-		x += xOffset;
-		if (x + w >= 1.0)
-		{
-			x = 0.01;
-			y += yOffset;
-		}
-	}
+	//	mCount		  = 2;
+	//	qreal x		  = 0.01;
+	//	qreal y		  = 0.01;
+	//	qreal w		  = 0.03;
+	//	qreal h		  = 0.02;
+	//	qreal xOffset = 0.01;
+	//	qreal yOffset = 0.01;
+	//	mVertices.clear();
+	//	for (int i = 0; i < mCount; i++)
+	//	{
+	//		mVertices << QVector3D(x, y, 0.0);
+	//		mVertices << QVector3D(x + w, y, 0.0);
+	//		mVertices << QVector3D(x + w, y + h, 0.0);
+	//		mVertices << QVector3D(x, y + h, 0.0);
+	//		x += xOffset;
+	//		if (x + w >= 1.0)
+	//		{
+	//			x = 0.01;
+	//			y += yOffset;
+	//		}
+	//	}
 }
 
 void MainWindow::updateVertices() { }
