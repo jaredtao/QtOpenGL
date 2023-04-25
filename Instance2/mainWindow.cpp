@@ -124,7 +124,7 @@ void MainWindow::initializeGL()
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		const uint32_t vertexLocation = 0;
+		const uint32_t vertexLocation	 = 0;
 		const uint32_t instanceLocation1 = 1;
 		const uint32_t instanceLocation2 = 2;
 		const uint32_t instanceLocation3 = 3;
@@ -198,10 +198,9 @@ void MainWindow::timerEvent(QTimerEvent*)
 void MainWindow::calcFPS()
 {
 	static QTime time;
-	static int	 once = [=]()
-	{
-		time.start();
-		return 0;
+	static int	 once = [=]() {
+		  time.start();
+		  return 0;
 	}();
 	Q_UNUSED(once)
 	static int frame = 0;
