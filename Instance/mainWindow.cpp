@@ -84,9 +84,10 @@ void MainWindow::initializeGL()
 		return;
 	}
 	QVector<QVector3D> vertices = {
-		QVector3D { -0.05, 0.05, 1.0 }, QVector3D { 0.05, -0.05, 1.0 }, QVector3D { -0.05, -0.05, 1.0 },
-
-		QVector3D { -0.05, 0.05, 1.0 }, QVector3D { 0.05, -0.05, 1.0 }, QVector3D { 0.05, 0.05, 1.0 },
+		QVector3D { -0.05, -0.05, 1.0 },
+		QVector3D { -0.05, 0.05, 1.0 },
+		QVector3D { 0.05, 0.05, 1.0 },
+		QVector3D { 0.05, -0.05, 1.0 },
 	};
 	QVector<QVector2D> offsets;
 	float			   offset = 0.1f;
@@ -99,16 +100,21 @@ void MainWindow::initializeGL()
 		}
 	}
 	{
+		// 生成顶点VBO
 		glGenBuffers(1, &mVerticesVBO);
+		// 生成实例VBO
 		glGenBuffers(1, &mInstanceVBO);
+		// 生成VAO
 		glGenVertexArrays(1, &mVAO);
 
+		// 顶点Buffer 写入数据
 		glBindBuffer(GL_ARRAY_BUFFER, mVerticesVBO);
 		{
 			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * vertices.size(), vertices.constData(), GL_STATIC_DRAW);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+		// 实例Buffer 写入数据
 		glBindBuffer(GL_ARRAY_BUFFER, mInstanceVBO);
 		{
 			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector2D) * offsets.size(), offsets.constData(), GL_STATIC_DRAW);
@@ -119,14 +125,17 @@ void MainWindow::initializeGL()
 		const uint32_t offsetLocation = 1;
 		glBindVertexArray(mVAO);
 		{
+			// 顶点Buffer配置
 			glEnableVertexAttribArray(vertexLocation);
 			glBindBuffer(GL_ARRAY_BUFFER, mVerticesVBO);
 			glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), (void*)0);
 
+			// 实例Buffer配置
 			glEnableVertexAttribArray(offsetLocation);
 			glBindBuffer(GL_ARRAY_BUFFER, mInstanceVBO);
 			glVertexAttribPointer(offsetLocation, 2, GL_FLOAT, GL_FALSE, sizeof(QVector2D), (void*)0);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			// 实例Buffer 除数配置
 			glVertexAttribDivisor(offsetLocation, 1);
 		}
 		glBindVertexArray(0);
@@ -152,7 +161,7 @@ void MainWindow::paintGL()
 	mProgram->setUniformValue("outColor0", mColor);
 	glBindVertexArray(mVAO);
 	{
-		glDrawArraysInstanced(GL_TRIANGLES, 0, 6, 100);
+		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, 100);
 	}
 	glBindVertexArray(0);
 }
