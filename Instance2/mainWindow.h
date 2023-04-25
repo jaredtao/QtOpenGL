@@ -26,6 +26,10 @@ private:
 	void initVertices();
 	void updateVertices();
 
+	void calcFPS();
+	void updateFPS(qreal);
+	void paintFPS();
+
 private:
 #ifdef _DEBUG
 	QOpenGLDebugLogger* mLogger = nullptr;
@@ -35,6 +39,9 @@ private:
 	GLuint				  mInstanceVBO = 0;
 	GLuint				  mVAO		   = 0;
 	QColor				  mColor	   = Qt::red;
-	QVector<QVector3D>	  mOffsets;
 	QVector<QVector3D>	  mVertices;
+	QMatrix4x4			  mMVPMat;
+	QVector<QMatrix4x4>	  mInstanceMats;
+
+	qreal mFPS = 60.0;
 };

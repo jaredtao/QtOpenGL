@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 
 	qWarning() << "fmt version" << fmt.version();
 	MainWindow w;
-	w.show();
+	w.showMaximized();
 
 	return app.exec();
 }

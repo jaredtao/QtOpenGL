@@ -1,6 +1,7 @@
 #include "mainWindow.h"
 #include "qopenglext.h"
 #include <QDebug>
+#include <QTime>
 static const QString sVertexShader = u8R"(
 #version 330
 
@@ -11,11 +12,12 @@ precision highp float;
 #endif
 
 layout (location = 0) in vec3 qt_Vertex;
-layout (location = 1) in vec3 qt_InstanceVertex;
+layout (location = 1) in mat4 qt_InstanceMatrix;
 
+uniform mat4 mvpMatrix;
 void main(void)
 {
-    gl_Position = vec4(qt_Vertex + qt_InstanceVertex, 1.0);
+    gl_Position = mvpMatrix * qt_InstanceMatrix *vec4(qt_Vertex, 1.0);
 }
 )";
 
@@ -66,7 +68,7 @@ void MainWindow::initializeGL()
 #endif
 
 	glClearColor(0.2, 0.3, 0.4, 1);
-
+	mMVPMat.setToIdentity();
 	mProgram = new QOpenGLShaderProgram(this);
 	if (!mProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, sVertexShader))
 	{
@@ -83,36 +85,28 @@ void MainWindow::initializeGL()
 		qWarning() << mProgram->log();
 		return;
 	}
-	QVector<QVector3D> initVertices = {
-		QVector3D { -0.05, -0.05, 1.0 },
-		QVector3D { -0.05, 0.05, 1.0 },
-		QVector3D { 0.05, 0.05, 1.0 },
-		QVector3D { 0.05, -0.05, 1.0 },
-	};
-	float offset = 0.1f;
-	float w		 = 0.1f;
-	float h		 = 0.1f;
-	mVertices	 = {
-		   QVector3D { -0.0, -0.0, 1.0 }, QVector3D { -0.0, 0.0f + h, 1.0 }, QVector3D { 0.0f + w, 0.0f + h, 1.0 }, QVector3D { 0.0f + w, -0.0, 1.0 },
-		   //		QVector3D { -0.05, -0.05, 1.0 },
-		   //		QVector3D { -0.05, 0.05, 1.0 },
-		   //		QVector3D { 0.05, 0.05, 1.0 },
-		   //		QVector3D { 0.05, -0.05, 1.0 },
-	};
 
-	for (int i = -10; i < 10; i += 2)
+	mVertices = {
+		QVector3D { -0.0005, -0.0005, 1.0 },
+		QVector3D { -0.0005, 0.0005, 1.0 },
+		QVector3D { 0.0005, 0.0005, 1.0 },
+		QVector3D { 0.0005, -0.0005, 1.0 },
+	};
+	float offset = 0.001f;
+	int	  w		 = 100;
+	int	  h		 = 100;
+	for (int i = -w; i < w; i += 2)
 	{
-		for (int j = -10; j < 10; j += 2)
+		for (int j = -h; j < h; j += 2)
 		{
-			qreal x = (float)i / 10.0f + offset;
-			qreal y = (float)j / 10.0f + offset;
-			//						mOffsets << initVertices.at(0) + QVector3D(x, y, 0.0);
-			//						mOffsets << initVertices.at(1) + QVector3D(x, y, 0.0);
-			//						mOffsets << initVertices.at(2) + QVector3D(x, y, 0.0);
-			//						mOffsets << initVertices.at(3) + QVector3D(x, y, 0.0);
-			mOffsets << QVector3D(x, y, 0.0);
+			qreal	   px = 1.0f * i / w + offset;
+			qreal	   py = 1.0f * j / h + offset;
+			QMatrix4x4 mat;
+			mat.translate(px, py);
+			mInstanceMats.append(mat);
 		}
 	}
+
 	{
 		glGenBuffers(1, &mVerticesVBO);
 		glGenBuffers(1, &mInstanceVBO);
@@ -126,24 +120,41 @@ void MainWindow::initializeGL()
 
 		glBindBuffer(GL_ARRAY_BUFFER, mInstanceVBO);
 		{
-			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * mOffsets.size(), mOffsets.constData(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(QMatrix4x4) * mInstanceMats.size(), mInstanceMats.constData(), GL_STATIC_DRAW);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		const uint32_t vertexLocation = 0;
-		const uint32_t offsetLocation = 1;
+		const uint32_t instanceLocation1 = 1;
+		const uint32_t instanceLocation2 = 2;
+		const uint32_t instanceLocation3 = 3;
+		const uint32_t instanceLocation4 = 4;
 		glBindVertexArray(mVAO);
 		{
 			glEnableVertexAttribArray(vertexLocation);
 			glBindBuffer(GL_ARRAY_BUFFER, mVerticesVBO);
 			glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), (void*)0);
 
-			glEnableVertexAttribArray(offsetLocation);
 			glBindBuffer(GL_ARRAY_BUFFER, mInstanceVBO);
-			glVertexAttribPointer(offsetLocation, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), (void*)0);
+
+			glEnableVertexAttribArray(instanceLocation1);
+			glVertexAttribPointer(instanceLocation1, 4, GL_FLOAT, GL_FALSE, sizeof(QMatrix4x4), (void*)0);
+
+			glEnableVertexAttribArray(instanceLocation2);
+			glVertexAttribPointer(instanceLocation2, 4, GL_FLOAT, GL_FALSE, sizeof(QMatrix4x4), (void*)(sizeof(QVector4D)));
+
+			glEnableVertexAttribArray(instanceLocation3);
+			glVertexAttribPointer(instanceLocation3, 4, GL_FLOAT, GL_FALSE, sizeof(QMatrix4x4), (void*)(2 * sizeof(QVector4D)));
+
+			glEnableVertexAttribArray(instanceLocation4);
+			glVertexAttribPointer(instanceLocation4, 4, GL_FLOAT, GL_FALSE, sizeof(QMatrix4x4), (void*)(3 * sizeof(QVector4D)));
+
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-			glVertexAttribDivisor(offsetLocation, 1);
+			glVertexAttribDivisor(instanceLocation1, 1);
+			glVertexAttribDivisor(instanceLocation2, 1);
+			glVertexAttribDivisor(instanceLocation3, 1);
+			glVertexAttribDivisor(instanceLocation4, 1);
 		}
 		glBindVertexArray(0);
 	}
@@ -166,11 +177,14 @@ void MainWindow::paintGL()
 		return;
 	}
 	mProgram->setUniformValue("outColor0", mColor);
+	mProgram->setUniformValue("mvpMatrix", mMVPMat);
 	glBindVertexArray(mVAO);
 	{
-		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, mOffsets.size());
+		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, mInstanceMats.size());
 	}
 	glBindVertexArray(0);
+	calcFPS();
+	paintFPS();
 }
 
 void MainWindow::timerEvent(QTimerEvent* e)
@@ -181,6 +195,32 @@ void MainWindow::timerEvent(QTimerEvent* e)
 	}
 }
 
+void MainWindow::calcFPS()
+{
+	static QTime time;
+	static int	 once = [=]()
+	{
+		time.start();
+		return 0;
+	}();
+	Q_UNUSED(once)
+	static int frame = 0;
+	if (frame++ > 100)
+	{
+		qreal elasped = time.elapsed();
+		updateFPS(frame / elasped * 1000);
+		time.restart();
+		frame = 0;
+	}
+}
+void MainWindow::updateFPS(qreal v)
+{
+	mFPS = v;
+}
+void MainWindow::paintFPS()
+{
+	setWindowTitle(QString("Instance 2 - FPS: %1").arg(QString::number(mFPS, 'f', 3)));
+}
 void MainWindow::initVertices()
 {
 	//	mCount		  = 2;
