@@ -83,20 +83,20 @@ void MainWindow::initializeGL()
 		qWarning() << mProgram->log();
 		return;
 	}
-	QVector<QVector3D> vertices = {
+	mVertices = {
 		QVector3D { -0.05, -0.05, 1.0 },
 		QVector3D { -0.05, 0.05, 1.0 },
 		QVector3D { 0.05, 0.05, 1.0 },
 		QVector3D { 0.05, -0.05, 1.0 },
 	};
-	QVector<QVector2D> offsets;
-	float			   offset = 0.1f;
+
+	float offset = 0.1f;
 
 	for (int i = -10; i < 10; i += 2)
 	{
 		for (int j = -10; j < 10; j += 2)
 		{
-			offsets.append(QVector2D(i / 10.0f + offset, j / 10.0f + offset));
+			mOffsets.append(QVector2D(i / 10.0f + offset, j / 10.0f + offset));
 		}
 	}
 	{
@@ -110,14 +110,14 @@ void MainWindow::initializeGL()
 		// 顶点Buffer 写入数据
 		glBindBuffer(GL_ARRAY_BUFFER, mVerticesVBO);
 		{
-			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * vertices.size(), vertices.constData(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * mVertices.size(), mVertices.constData(), GL_STATIC_DRAW);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// 实例Buffer 写入数据
 		glBindBuffer(GL_ARRAY_BUFFER, mInstanceVBO);
 		{
-			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector2D) * offsets.size(), offsets.constData(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector2D) * mOffsets.size(), mOffsets.constData(), GL_STATIC_DRAW);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -161,7 +161,7 @@ void MainWindow::paintGL()
 	mProgram->setUniformValue("outColor0", mColor);
 	glBindVertexArray(mVAO);
 	{
-		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, 100);
+		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, mOffsets.size());
 	}
 	glBindVertexArray(0);
 }
