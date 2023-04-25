@@ -30,9 +30,9 @@ private:
 #ifdef _DEBUG
 	QOpenGLDebugLogger* mLogger = nullptr;
 #endif
-	QOpenGLShaderProgram* mProgram = nullptr;
+	QOpenGLShaderProgram* mProgram	   = nullptr;
 	GLuint				  mVerticesVBO = 0;
 	GLuint				  mInstanceVBO = 0;
-	GLuint				  mVAO	   = 0;
-	QColor				  mColor   = Qt::red;
+	GLuint				  mVAO		   = 0;
+	QColor				  mColor	   = Qt::red;
 };
