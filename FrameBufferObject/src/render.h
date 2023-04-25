@@ -3,11 +3,11 @@
 
 #include <QMatrix4x4>
 
-#include <QOpenGLShader>
-#include <QOpenGLTexture>
 #include <QOpenGLContext>
 #include <QOpenGLExtraFunctions>
+#include <QOpenGLShader>
 #include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
 
 class Render : protected QOpenGLExtraFunctions
 {
@@ -20,6 +20,7 @@ public:
 	void setRotate(qreal x, qreal y, qreal z);
 
 	qreal getFPS();
+
 private:
 	void initShaders();
 	void initTextures();
@@ -32,15 +33,15 @@ private:
 
 	QOpenGLShaderProgram m_program;
 
-	QOpenGLTexture *m_texture;
+	QOpenGLTexture* m_texture;
 
 	QVector<QVector3D> vertices;
 	QVector<QVector4D> colors;
 	QVector<QVector2D> texcoords;
-	int mMVPMatrixHandle;
-	int mVerticesHandle;
-	int mColorsHandle;
-	int mTexCoordHandle;
+	int				   mMVPMatrixHandle;
+	int				   mVerticesHandle;
+	int				   mColorsHandle;
+	int				   mTexCoordHandle;
 
 	QMatrix4x4 mModelMatrix;
 	QMatrix4x4 mViewMatrix;
@@ -48,7 +49,7 @@ private:
 	QMatrix4x4 mMVPMatrix;
 
 	qreal fps;
-    int angleInDegrees;
+	int	  angleInDegrees;
 };
 
 #endif // RENDER_H

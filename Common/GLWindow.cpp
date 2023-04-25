@@ -1,84 +1,84 @@
 #include "GLWindow.h"
 #include <QDebug>
 #include <QSurfaceFormat>
-GLWindow::GLWindow(QOpenGLWindow::UpdateBehavior updateBehavior, QWindow *parent)
-    : QOpenGLWindow(updateBehavior, parent)
+GLWindow::GLWindow(QOpenGLWindow::UpdateBehavior updateBehavior, QWindow* parent)
+	: QOpenGLWindow(updateBehavior, parent)
 #ifdef GL_DEBUG
-      ,
-      mDebugger(this)
+	, mDebugger(this)
 #endif
 {
-    resize(1280, 760);
-    startTimer(QSurfaceFormat::defaultFormat().swapInterval());
+	resize(1280, 760);
+	startTimer(QSurfaceFormat::defaultFormat().swapInterval());
 }
 
-GLWindow::GLWindow(QOpenGLContext *shareContext, QOpenGLWindow::UpdateBehavior updateBehavior, QWindow *parent)
-    : QOpenGLWindow(shareContext, updateBehavior, parent)
+GLWindow::GLWindow(QOpenGLContext* shareContext, QOpenGLWindow::UpdateBehavior updateBehavior, QWindow* parent)
+	: QOpenGLWindow(shareContext, updateBehavior, parent)
 #ifdef GL_DEBUG
-      ,
-      mDebugger(this)
+	, mDebugger(this)
 #endif
 {
-    resize(1280, 760);
-    startTimer(QSurfaceFormat::defaultFormat().swapInterval());
+	resize(1280, 760);
+	startTimer(QSurfaceFormat::defaultFormat().swapInterval());
 }
 
 GLWindow::~GLWindow()
 {
-    makeCurrent();
+	makeCurrent();
 #ifdef GL_DEBUG
-    if (mDebugger.isLogging()) {
-        mDebugger.stopLogging();
-    }
+	if (mDebugger.isLogging())
+	{
+		mDebugger.stopLogging();
+	}
 #endif
-    doneCurrent();
+	doneCurrent();
 }
 
 void GLWindow::initializeGL()
 {
-    initializeOpenGLFunctions();
+	initializeOpenGLFunctions();
 #ifdef GL_DEBUG
-    mDebugger.initialize();
-    connect(&mDebugger, &QOpenGLDebugLogger::messageLogged, this, &GLWindow::onDebuggerMessage);
-    mDebugger.startLogging();
+	mDebugger.initialize();
+	connect(&mDebugger, &QOpenGLDebugLogger::messageLogged, this, &GLWindow::onDebuggerMessage);
+	mDebugger.startLogging();
 #endif
-    mElapsed.start();
-    mFrame = 0;
+	mElapsed.start();
+	mFrame = 0;
 }
 
 void GLWindow::resizeGL(int w, int h)
 {
-    resize(w, h);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	resize(w, h);
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 }
 
 void GLWindow::paintGL()
 {
-    calcFPS();
+	calcFPS();
 }
 
 void GLWindow::calcFPS()
 {
-    mFrame++;
-    if (mFrame > 100) {
-        auto cost = mElapsed.elapsed();
-        updateFPS(1.0 * mFrame / cost * 1000);
-        mFrame = 0;
-        mElapsed.restart();
-    }
+	mFrame++;
+	if (mFrame > 100)
+	{
+		auto cost = mElapsed.elapsed();
+		updateFPS(1.0 * mFrame / cost * 1000);
+		mFrame = 0;
+		mElapsed.restart();
+	}
 }
 void GLWindow::updateFPS(qreal v)
 {
-    mFps = v;
+	mFps = v;
 }
 
-void GLWindow::timerEvent(QTimerEvent *)
+void GLWindow::timerEvent(QTimerEvent*)
 {
-    update();
+	update();
 }
 #ifdef GL_DEBUG
-void GLWindow::onDebuggerMessage(const QOpenGLDebugMessage &debugMessage)
+void GLWindow::onDebuggerMessage(const QOpenGLDebugMessage& debugMessage)
 {
-    qWarning() << debugMessage.message();
+	qWarning() << debugMessage.message();
 }
 #endif

@@ -1,37 +1,39 @@
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLWindow>
 #ifdef GL_DEBUG
-#    include <QOpenGLDebugLogger>
+#include <QOpenGLDebugLogger>
 #endif
-#include <QTimer>
 #include <QElapsedTimer>
-class GLWindow : public QOpenGLWindow, public QOpenGLExtraFunctions
+#include <QTimer>
+class GLWindow
+	: public QOpenGLWindow
+	, public QOpenGLExtraFunctions
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit GLWindow(UpdateBehavior updateBehavior = NoPartialUpdate, QWindow *parent = nullptr);
-    explicit GLWindow(QOpenGLContext *shareContext, UpdateBehavior updateBehavior = NoPartialUpdate, QWindow *parent = nullptr);
-    virtual ~GLWindow();
+	explicit GLWindow(UpdateBehavior updateBehavior = NoPartialUpdate, QWindow* parent = nullptr);
+	explicit GLWindow(QOpenGLContext* shareContext, UpdateBehavior updateBehavior = NoPartialUpdate, QWindow* parent = nullptr);
+	virtual ~GLWindow();
 
 protected:
-    virtual void initializeGL() override;
-    virtual void resizeGL(int w, int h) override;
-    virtual void paintGL() override;
+	virtual void initializeGL() override;
+	virtual void resizeGL(int w, int h) override;
+	virtual void paintGL() override;
 
-    void timerEvent(QTimerEvent *) override;
+	void timerEvent(QTimerEvent*) override;
 protected slots:
 #ifdef GL_DEBUG
-    void onDebuggerMessage(const QOpenGLDebugMessage &debugMessage);
+	void onDebuggerMessage(const QOpenGLDebugMessage& debugMessage);
 #endif
 protected:
-    void calcFPS();
-    void updateFPS(qreal v);
+	void calcFPS();
+	void updateFPS(qreal v);
 
 protected:
 #ifdef GL_DEBUG
-    QOpenGLDebugLogger mDebugger;
+	QOpenGLDebugLogger mDebugger;
 #endif
-    qreal mFps = 60.0;
-    QElapsedTimer mElapsed;
-    int mFrame = 0;
+	qreal		  mFps = 60.0;
+	QElapsedTimer mElapsed;
+	int			  mFrame = 0;
 };

@@ -1,10 +1,10 @@
 #pragma once
-#include <QOpenGLShaderProgram>
 #include <QMatrix4x4>
-#include <QOpenGLExtraFunctions>
 #include <QOpenGLBuffer>
-#include <QOpenGLTexture>
 #include <QOpenGLContext>
+#include <QOpenGLExtraFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
 #ifdef _DEBUG
 #include <QOpenGLDebugLogger>
 #endif
