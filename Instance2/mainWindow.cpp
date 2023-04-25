@@ -63,11 +63,11 @@ void MainWindow::initializeGL()
 #ifdef _DEBUG
 	mLogger = new QOpenGLDebugLogger(this);
 	mLogger->initialize();
-	connect(mLogger, &QOpenGLDebugLogger::messageLogged, this, [this](const QOpenGLDebugMessage& msg) { qWarning() << msg.message(); });
+	connect(mLogger, &QOpenGLDebugLogger::messageLogged, this, [](const QOpenGLDebugMessage& msg) { qWarning() << msg.message(); });
 	mLogger->startLogging();
 #endif
 
-	glClearColor(0.2, 0.3, 0.4, 1);
+	glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
 	mMVPMat.setToIdentity();
 	mProgram = new QOpenGLShaderProgram(this);
 	if (!mProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, sVertexShader))
@@ -87,10 +87,10 @@ void MainWindow::initializeGL()
 	}
 
 	mVertices = {
-		QVector3D { -0.0005, -0.0005, 1.0 },
-		QVector3D { -0.0005, 0.0005, 1.0 },
-		QVector3D { 0.0005, 0.0005, 1.0 },
-		QVector3D { 0.0005, -0.0005, 1.0 },
+		QVector3D { -0.0005f, -0.0005f, 1.0f },
+		QVector3D { -0.0005f, 0.0005f, 1.0f },
+		QVector3D { 0.0005f, 0.0005f, 1.0f },
+		QVector3D { 0.0005f, -0.0005f, 1.0f },
 	};
 	float offset = 0.001f;
 	int	  w		 = 100;
@@ -170,7 +170,7 @@ void MainWindow::resizeGL(int w, int h)
 void MainWindow::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.2, 0.3, 0.4, 1);
+	glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
 	if (!mProgram->bind())
 	{
 		qWarning() << mProgram->log();
@@ -187,7 +187,7 @@ void MainWindow::paintGL()
 	paintFPS();
 }
 
-void MainWindow::timerEvent(QTimerEvent* e)
+void MainWindow::timerEvent(QTimerEvent*)
 {
 	if (isVisible())
 	{
