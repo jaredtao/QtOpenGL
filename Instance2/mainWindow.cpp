@@ -15,7 +15,7 @@ layout (location = 1) in vec3 qt_InstanceVertex;
 
 void main(void)
 {
-    gl_Position = vec4(qt_InstanceVertex, 1.0);
+    gl_Position = vec4(qt_Vertex + qt_InstanceVertex, 1.0);
 }
 )";
 
@@ -83,25 +83,34 @@ void MainWindow::initializeGL()
 		qWarning() << mProgram->log();
 		return;
 	}
-	QVector<QVector3D> vertices = {
+	QVector<QVector3D> initVertices = {
 		QVector3D { -0.05, -0.05, 1.0 },
 		QVector3D { -0.05, 0.05, 1.0 },
 		QVector3D { 0.05, 0.05, 1.0 },
 		QVector3D { 0.05, -0.05, 1.0 },
 	};
-	QVector<QVector3D> offsets;
-	float			   offset = 0.1f;
+	float offset = 0.1f;
+	float w		 = 0.1f;
+	float h		 = 0.1f;
+	mVertices	 = {
+		   QVector3D { -0.0, -0.0, 1.0 }, QVector3D { -0.0, 0.0f + h, 1.0 }, QVector3D { 0.0f + w, 0.0f + h, 1.0 }, QVector3D { 0.0f + w, -0.0, 1.0 },
+		   //		QVector3D { -0.05, -0.05, 1.0 },
+		   //		QVector3D { -0.05, 0.05, 1.0 },
+		   //		QVector3D { 0.05, 0.05, 1.0 },
+		   //		QVector3D { 0.05, -0.05, 1.0 },
+	};
 
 	for (int i = -10; i < 10; i += 2)
 	{
 		for (int j = -10; j < 10; j += 2)
 		{
-			qreal x = i / 10.0f + offset;
-			qreal y = j / 10.0f + offset;
-			offsets << vertices.at(0) + QVector3D(x, y, 0.0);
-			offsets << vertices.at(1) + QVector3D(x, y, 0.0);
-			offsets << vertices.at(2) + QVector3D(x, y, 0.0);
-			offsets << vertices.at(3) + QVector3D(x, y, 0.0);
+			qreal x = (float)i / 10.0f + offset;
+			qreal y = (float)j / 10.0f + offset;
+			//						mOffsets << initVertices.at(0) + QVector3D(x, y, 0.0);
+			//						mOffsets << initVertices.at(1) + QVector3D(x, y, 0.0);
+			//						mOffsets << initVertices.at(2) + QVector3D(x, y, 0.0);
+			//						mOffsets << initVertices.at(3) + QVector3D(x, y, 0.0);
+			mOffsets << QVector3D(x, y, 0.0);
 		}
 	}
 	{
@@ -111,13 +120,13 @@ void MainWindow::initializeGL()
 
 		glBindBuffer(GL_ARRAY_BUFFER, mVerticesVBO);
 		{
-			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * vertices.size(), vertices.constData(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * mVertices.size(), mVertices.constData(), GL_STATIC_DRAW);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, mInstanceVBO);
 		{
-			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * offsets.size(), offsets.constData(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(QVector3D) * mOffsets.size(), mOffsets.constData(), GL_STATIC_DRAW);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -159,7 +168,7 @@ void MainWindow::paintGL()
 	mProgram->setUniformValue("outColor0", mColor);
 	glBindVertexArray(mVAO);
 	{
-		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, 100);
+		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, mOffsets.size());
 	}
 	glBindVertexArray(0);
 }

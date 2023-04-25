@@ -35,4 +35,6 @@ private:
 	GLuint				  mInstanceVBO = 0;
 	GLuint				  mVAO		   = 0;
 	QColor				  mColor	   = Qt::red;
+	QVector<QVector3D>	  mOffsets;
+	QVector<QVector3D>	  mVertices;
 };
