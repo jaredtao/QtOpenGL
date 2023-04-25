@@ -13,7 +13,8 @@ SUBDIRS += \
     material \
     DepthTest \
     SkyBox \
-    Instance
+	Instance \
+	Instance2
 
 OTHER_FILES += \
     README.md \
