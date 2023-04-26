@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>pu.png</file>
+    </qresource>
+</RCC>

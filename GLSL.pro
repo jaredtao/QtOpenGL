@@ -14,7 +14,8 @@ SUBDIRS += \
     DepthTest \
     SkyBox \
 	Instance \
-	Instance2
+	Instance2 \
+	Instance-Texture
 
 OTHER_FILES += \
     README.md \
